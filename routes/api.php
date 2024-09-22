@@ -61,6 +61,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('/{id}', [BukuController::class, 'destroy'])->name('buku.delete');
     });
 });
+Route::prefix('buku')->group(function () {
+    Route::get('/', [BukuController::class, 'getAll'])->name('buku.index');
+    Route::get('/search', [BukuController::class, 'searchByJudul'])->name('buku.search');
+});
 
 // PEMINJAMAN
 Route::middleware(['auth:sanctum'])->group(function () {

@@ -39,9 +39,6 @@ class BukuController extends Controller
 
     public function getAll(Request $request)
     {
-        if (!$request->user()) {
-            return response()->json(['message' => 'Anda perlu login'], 401);
-        }
 
         $buku = Buku::all();
         return response()->json([
@@ -63,7 +60,7 @@ class BukuController extends Controller
         $buku = Buku::where('judul', 'like', $prefix . '%')->get(['id', 'judul', 'pengarang', 'penerbit', 'tahun_terbit', 'status']);
 
         if ($buku->isEmpty()) {
-            return response()->json(['message' => 'Buku belum terdaftar'], 404);
+            return response()->json(['message' => 'Buku tidak ada'], 404);
         }
 
         return response()->json([
