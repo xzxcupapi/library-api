@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\MahasiswaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +24,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [\App\Http\Controllers\Api\AuthController::class, 'logout']);
+});
+
+
+// MAHASISWA
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::prefix('mahasiswa')->group(function () {
+        Route::post('/', [MahasiswaController::class, 'store'])->name('mahasiswa.store');
+        Route::get('/', [MahasiswaController::class, 'getAllData'])->name('mahasiswa.index');
+        Route::get('/search', [MahasiswaController::class, 'searchByNpm'])->name('mahasiswa.search');
+    });
 });
