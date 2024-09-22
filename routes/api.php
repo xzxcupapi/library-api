@@ -33,5 +33,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [MahasiswaController::class, 'store'])->name('mahasiswa.store');
         Route::get('/', [MahasiswaController::class, 'getAllData'])->name('mahasiswa.index');
         Route::get('/search', [MahasiswaController::class, 'searchByNpm'])->name('mahasiswa.search');
+        Route::delete('/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
     });
 });

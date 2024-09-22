@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class MahasiswaController extends Controller
 {
-
+    // create
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -32,11 +32,12 @@ class MahasiswaController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Mahasiswa created successfully',
+            'message' => 'Mahasiswa berhasil ditambahkan',
             'data' => $mahasiswa,
         ], 201);
     }
 
+    // get all data
     public function getAllData(Request $request)
     {
         if (!$request->user()) {
@@ -44,9 +45,13 @@ class MahasiswaController extends Controller
         }
 
         $mahasiswa = Mahasiswa::all();
-        return response()->json($mahasiswa);
+        return response()->json([
+            'message' => 'Data Mahasiswa',
+            'data' => $mahasiswa,
+        ], 200);
     }
 
+    // search by npm
     public function searchByNpm(Request $request)
     {
         $request->validate([
@@ -54,12 +59,33 @@ class MahasiswaController extends Controller
         ]);
 
         $npm = $request->input('npm');
-        $mahasiswa = Mahasiswa::where('npm', $npm)->first(['npm', 'nama_lengkap', 'fakultas']);
+        $mahasiswa = Mahasiswa::where('npm', $npm)->first(['id', 'npm', 'nama_lengkap', 'fakultas']);
 
         if (!$mahasiswa) {
             return response()->json(['message' => 'Mahasiswa belum terdaftar'], 404);
         }
 
-        return response()->json($mahasiswa);
+        return response()->json([
+            'message' => 'Data Mahasiswa',
+            'data' => $mahasiswa,
+        ], 200);
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        if (!$request->user()) {
+            return response()->json(['message' => 'Anda perlu login'], 401);
+        }
+
+        $mahasiswa = Mahasiswa::find($id);
+        if (!$mahasiswa) {
+            return response()->json(['message' => 'Mahasiswa tidak ditemukan'], 404);
+        }
+
+        $mahasiswa->delete();
+        return response()->json([
+            'message' => 'Mahasiswa berhasil dihapus',
+            'data' => $mahasiswa
+        ], 200);
     }
 }
