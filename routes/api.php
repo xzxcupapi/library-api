@@ -56,5 +56,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [BukuController::class, 'store'])->name('buku.store');
         Route::get('/', [BukuController::class, 'getAll'])->name('buku.index');
         Route::get('/search', [BukuController::class, 'searchByJudul'])->name('buku.search');
+        Route::put('/{id}', [BukuController::class, 'update'])->name('buku.update');
+        Route::delete('/{id}', [BukuController::class, 'destroy'])->name('buku.delete');
     });
 });

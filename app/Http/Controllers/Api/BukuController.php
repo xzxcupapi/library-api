@@ -71,4 +71,45 @@ class BukuController extends Controller
             'data' => $buku,
         ], 200);
     }
+
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'judul' => 'nullable|string|max:255',
+            'pengarang' => 'nullable|string|max:255',
+            'penerbit' => 'nullable|string|max:255',
+            'tahun_terbit' => 'nullable|integer|min:1900|max:' . date('Y'),
+            'status' => 'nullable|in:tersedia,dipinjam,hilang',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $buku = Buku::find($id);
+
+        if (!$buku) {
+            return response()->json(['message' => 'Buku tidak ditemukan'], 404);
+        }
+
+        $buku->update($request->only(['judul', 'pengarang', 'penerbit', 'tahun_terbit', 'status']));
+
+        return response()->json([
+            'message' => 'Buku berhasil diperbarui',
+            'data' => $buku,
+        ], 200);
+    }
+
+    public function destroy($id)
+    {
+        $buku = Buku::find($id);
+
+        if (!$buku) {
+            return response()->json(['message' => 'Buku tidak ditemukan'], 404);
+        }
+
+        $buku->delete();
+
+        return response()->json(['message' => 'Buku berhasil dihapus'], 200);
+    }
 }

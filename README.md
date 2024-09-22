@@ -101,6 +101,14 @@
     -   **Example:** `http://127.0.0.1:8000/api/buku/search?judul=nis`
     -   **Example:** `Hanya menggunakan prefix 3 huruf saja`
 
+-   **Update Buku**
+
+    -   **Endpoint:** `POST /api/buku`
+    -   **Controller:** `BukuController::class`
+    -   **Method:** `puth`
+    -   **Middleware:** `auth:sanctum`
+    -   **Description:** Edit buku record.
+
 -   **Delete Buku**
     -   **Endpoint:** `DELETE /api/buku/{id}`
     -   **Controller:** `BukuController::class`
@@ -159,6 +167,7 @@ Route::prefix('api')->middleware('auth:sanctum')->group(function () {
         Route::get('/', [BukuController::class, 'getAllData'])->name('buku.index');
         Route::get('/search', [BukuController::class, 'searchByJudul'])->name('buku.search');
         Route::delete('/{id}', [BukuController::class, 'destroy'])->name('buku.destroy');
+        Route::put('/{id}', [BukuController::class, 'update'])->name('buku.update');
     });
 });
 ```
