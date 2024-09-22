@@ -18,4 +18,9 @@ class Buku extends Model
         'tahun_terbit',
         'status',
     ];
+
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class, 'id_buku', 'id');
+    }
 }
