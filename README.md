@@ -76,6 +76,21 @@ Route::prefix('api')->middleware('auth:sanctum')->group(function () {
 });
 ```
 
+### Kunjungan Routes
+
+```php
+without Login
+Route::prefix('kunjungan')->group(function () {
+    Route::post('/', [KunjunganController::class, 'store'])->name('kunjungan.store');
+});
+Login
+Route::prefix('api')->middleware('auth:sanctum')->group(function () {
+    Route::prefix('kunjungan')->group(function () {
+        Route::get('/', [MahasiswaController::class, 'getAllData'])->name('mahasiswa.index');
+    });
+});
+```
+
 ## Installation and Setup
 
 1. Clone the repository.
