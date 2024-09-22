@@ -51,22 +51,22 @@ class AuthController extends Controller
 
         if (!$user) {
             return response()->json([
-                'message' => 'User not registered.'
+                'message' => 'User belum terdaftar.'
             ], 404);
         }
 
-        // Cek apakah password salah
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
-                'message' => 'Invalid password.'
+                'message' => 'Password Salah.'
             ], 401);
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
+        $cleanToken = explode('|', $token)[1];
 
         return response()->json([
-            'message' => 'Login success',
-            'access_token' => $token,
+            'message' => 'Login berhasil',
+            'access_token' => $cleanToken,
             'token_type' => 'Bearer'
         ]);
     }
@@ -75,14 +75,14 @@ class AuthController extends Controller
     {
         if (!$request->user()) {
             return response()->json([
-                'message' => 'User not authenticated.'
+                'message' => 'Login terlebih dahulu.'
             ], 401);
         }
 
         $request->user()->tokens()->delete();
 
         return response()->json([
-            'message' => 'Logout success'
+            'message' => 'Logout berhasil'
         ]);
     }
 }
