@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MahasiswaController;
 use App\Http\Controllers\Api\KunjunganController;
+use App\Http\Controllers\Api\PeminjamanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,5 +59,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/search', [BukuController::class, 'searchByJudul'])->name('buku.search');
         Route::put('/{id}', [BukuController::class, 'update'])->name('buku.update');
         Route::delete('/{id}', [BukuController::class, 'destroy'])->name('buku.delete');
+    });
+});
+
+// PEMINJAMAN
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::prefix('peminjaman')->group(function () {
+        Route::post('/', [PeminjamanController::class, 'store'])->name('peminjaman.store');
+        Route::get('/', [PeminjamanController::class, 'getAll'])->name('peminjaman.index');
+        Route::put('/{id}', [PeminjamanController::class, 'update'])->name('peminjaman.update');
+        Route::delete('/{id}', [PeminjamanController::class, 'destroy'])->name('peminjaman.delete');
     });
 });
