@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MahasiswaController;
+use App\Http\Controllers\Api\KunjunganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,4 +36,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/search', [MahasiswaController::class, 'searchByNpm'])->name('mahasiswa.search');
         Route::delete('/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
     });
+});
+
+// KUNJUNGAN
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::prefix('kunjungan')->group(function () {
+        Route::get('/', [KunjunganController::class, 'getAll'])->name('kunjungan.index');
+    });
+});
+Route::prefix('kunjungan')->group(function () {
+    Route::post('/', [KunjunganController::class, 'store'])->name('kunjungan.store');
 });

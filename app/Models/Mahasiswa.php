@@ -17,4 +17,9 @@ class Mahasiswa extends Model
         'fakultas',
         'sidik_jari',
     ];
+
+    public function kunjungan()
+    {
+        return $this->hasMany(Kunjungan::class, 'id_mahasiswa', 'id');
+    }
 }
