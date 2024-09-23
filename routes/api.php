@@ -37,6 +37,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [MahasiswaController::class, 'store'])->name('mahasiswa.store');
         Route::get('/', [MahasiswaController::class, 'getAllData'])->name('mahasiswa.index');
         Route::get('/search', [MahasiswaController::class, 'searchByNpm'])->name('mahasiswa.search');
+        Route::get('/{id}', [MahasiswaController::class, 'show'])->name('mahasiswa.id');
+        Route::put('/{id}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
         Route::delete('/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
     });
 });

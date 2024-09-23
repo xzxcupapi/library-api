@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Admin Panel</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -7,7 +7,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Mahasiswa</a>
+                    <a class="nav-link" href="/mahasiswa">Mahasiswa</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Buku</a>

@@ -15,3 +15,6 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 // ADMIN DASHBOARD
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/mahasiswa', function () {
+    return view('admin.pages.mahasiswa.index');
+})->name('mahasiswa.all');

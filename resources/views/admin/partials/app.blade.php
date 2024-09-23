@@ -13,12 +13,9 @@
 
 <body>
     @include('admin.components.navbar')
-
-    <div class="container mt-5">
-        <h1>Selamat datang di Dashboard</h1>
-        <p>Ini adalah halaman dashboard Anda.</p>
+    <div class="container-fluid">
+        @include('mahasiswa.components.body')
     </div>
-
     @include('admin.components.footer')
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

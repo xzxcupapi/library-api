@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 
 class MahasiswaController extends Controller
@@ -44,12 +45,80 @@ class MahasiswaController extends Controller
             return response()->json(['message' => 'Anda perlu login'], 401);
         }
 
-        $mahasiswa = Mahasiswa::all();
+        // Ambil parameter untuk DataTables
+        $searchValue = $request->input('search.value');
+        $draw = $request->input('draw');
+        $limit = $request->input('length');
+        $offset = $request->input('start');
+
+        $query = Mahasiswa::query();
+
+        if ($searchValue) {
+            $query->where(function ($q) use ($searchValue) {
+                $q->where('npm', 'LIKE', "%{$searchValue}%")
+                    ->orWhere('nama_lengkap', 'LIKE', "%{$searchValue}%")
+                    ->orWhere('fakultas', 'LIKE', "%{$searchValue}%");
+            });
+        }
+
+        $totalFiltered = $query->count();
+
+        $mahasiswa = $query->offset($offset)->limit($limit)->get();
+
+        $total = Mahasiswa::count();
+
         return response()->json([
-            'message' => 'Data Mahasiswa',
+            'draw' => intval($draw),
+            'recordsTotal' => $total,
+            'recordsFiltered' => $totalFiltered,
             'data' => $mahasiswa,
         ], 200);
     }
+
+    public function update(Request $request, $id)
+    {
+        // Log data yang diterima
+        Log::info('Data yang diterima untuk update:', $request->all());
+
+        $validator = Validator::make($request->all(), [
+            'npm',
+            'nama_lengkap' => 'string|max:255',
+            'fakultas' => 'string|max:255',
+            'sidik_jari',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $mahasiswa = Mahasiswa::find($id);
+        if (!$mahasiswa) {
+            return response()->json([
+                'message' => 'Mahasiswa tidak ditemukan',
+            ], 404);
+        }
+
+        if ($request->has('npm')) {
+            $mahasiswa->npm = $request->npm;
+        }
+        if ($request->has('nama_lengkap')) {
+            $mahasiswa->nama_lengkap = $request->nama_lengkap;
+        }
+        if ($request->has('fakultas')) {
+            $mahasiswa->fakultas = $request->fakultas;
+        }
+        if ($request->has('sidik_jari')) {
+            $mahasiswa->sidik_jari = $request->sidik_jari;
+        }
+
+        $mahasiswa->save();
+
+        return response()->json([
+            'message' => 'Mahasiswa berhasil diperbarui',
+            'data' => $mahasiswa,
+        ], 200);
+    }
+
 
     // search by npm
     public function searchByNpm(Request $request)
@@ -69,6 +138,19 @@ class MahasiswaController extends Controller
             'message' => 'Data Mahasiswa',
             'data' => $mahasiswa,
         ], 200);
+    }
+
+    public function show($id)
+    {
+        $mahasiswa = Mahasiswa::find($id);
+
+        if (!$mahasiswa) {
+            return response()->json([
+                'message' => 'Mahasiswa tidak ditemukan',
+            ], 404);
+        }
+
+        return response()->json($mahasiswa, 200);
     }
 
     public function destroy(Request $request, $id)
