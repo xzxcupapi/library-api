@@ -15,6 +15,11 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 // ADMIN DASHBOARD
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// mahasiswa
 Route::get('/mahasiswa', function () {
     return view('admin.pages.mahasiswa.index');
 })->name('mahasiswa.all');
+// buku 
+Route::get('/buku', function () {
+    return view('admin.pages.buku.index');
+})->name('buku.all');

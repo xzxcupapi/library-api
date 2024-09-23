@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Admin Panel</a>
+        <a class="navbar-brand" href="/dashboard">Admin Panel</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -10,7 +10,7 @@
                     <a class="nav-link" href="/mahasiswa">Mahasiswa</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Buku</a>
+                    <a class="nav-link" href="/buku">Buku</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Kunjungan</a>

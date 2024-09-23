@@ -11,12 +11,12 @@ class BukuController extends Controller
 {
     public function store(Request $request)
     {
+        // Validasi input, status tidak lagi divalidasi dari frontend
         $validator = Validator::make($request->all(), [
             'judul' => 'required|string|max:255',
             'pengarang' => 'required|string|max:255',
             'penerbit' => 'required|string|max:255',
-            'tahun_terbit' => 'required|integer|min:1900|max:' . date('Y'),
-            'status' => 'required|in:tersedia,dipinjam,hilang',
+            'tahun_terbit' => 'required|integer|min:1000|max:' . date('Y'),
         ]);
 
         if ($validator->fails()) {
@@ -28,7 +28,7 @@ class BukuController extends Controller
             'pengarang' => $request->pengarang,
             'penerbit' => $request->penerbit,
             'tahun_terbit' => $request->tahun_terbit,
-            'status' => $request->status,
+            'status' => 'tersedia',
         ]);
 
         return response()->json([
@@ -39,12 +39,44 @@ class BukuController extends Controller
 
     public function getAll(Request $request)
     {
+        $searchValue = $request->input('search.value');
+        $draw = $request->input('draw');
+        $limit = $request->input('length');
+        $offset = $request->input('start');
 
-        $buku = Buku::all();
+        $query = Buku::query();
+        if ($searchValue) {
+            $query->where(function ($q) use ($searchValue) {
+                $q->where('judul', 'LIKE', "%{$searchValue}%")
+                    ->orWhere('pengarang', 'LIKE', "%{$searchValue}%")
+                    ->orWhere('status', 'LIKE', "%{$searchValue}%");
+            });
+        }
+
+        $totalFiltered = $query->count();
+        $buku = $query->offset($offset)->limit($limit)->get();
+
+        $total = Buku::count();
+
         return response()->json([
-            'message' => 'Data Buku',
+            'draw' => intval($draw),
+            'recordsTotal' => $total,
+            'recordsFiltered' => $totalFiltered,
             'data' => $buku,
         ], 200);
+    }
+
+    public function show($id)
+    {
+        $buku = Buku::find($id);
+
+        if (!$buku) {
+            return response()->json([
+                'message' => 'Buku tidak ditemukan',
+            ], 404);
+        }
+
+        return response()->json($buku, 200);
     }
 
     public function searchByJudul(Request $request)
