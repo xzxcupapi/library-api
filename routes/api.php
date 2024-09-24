@@ -65,7 +65,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::prefix('buku')->group(function () {
     Route::get('/', [BukuController::class, 'getAll'])->name('buku.index');
     Route::get('/dashboard/all', [BukuController::class, 'getBuku'])->name('buku.dashboard');
-    Route::get('/search', [BukuController::class, 'searchByJudul'])->name('buku.search');
+    Route::get('/search/all', [BukuController::class, 'searchByJudul'])->name('buku.search');
 });
 
 

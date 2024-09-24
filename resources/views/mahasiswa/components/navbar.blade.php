@@ -37,7 +37,7 @@
         const judul = document.getElementById('searchInput').value;
 
         if (judul) {
-            axios.get(`http://127.0.0.1:8000/api/buku/search?judul=${judul}`)
+            axios.get(`http://127.0.0.1:8000/api/buku/search/all?judul=${judul}`)
                 .then(function(response) {
                     const bukuList = response.data.data;
                     const modalBody = document.getElementById('modalBody');

@@ -13,10 +13,10 @@
                     <a class="nav-link" href="/buku">Buku</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Kunjungan</a>
+                    <a class="nav-link" href="#">Peminjaman</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Peminjaman</a>
+                    <a class="nav-link" href="/kunjungan">Kunjungan</a>
                 </li>
             </ul>
             <ul class="navbar-nav">

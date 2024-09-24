@@ -99,7 +99,7 @@ class BukuController extends Controller
 
         $judul = $request->input('judul');
 
-        $prefix = substr($judul, 0, 2);
+        $prefix = substr($judul, 0, 4);
 
         $buku = Buku::where('judul', 'like', $prefix . '%')->get(['id', 'judul', 'pengarang', 'penerbit', 'tahun_terbit', 'status']);
 

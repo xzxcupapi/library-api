@@ -23,3 +23,8 @@ Route::get('/mahasiswa', function () {
 Route::get('/buku', function () {
     return view('admin.pages.buku.index');
 })->name('buku.all');
+
+// kunjungan
+Route::get('/kunjungan', function () {
+    return view('admin.pages.kunjungan.index');
+})->name('kunjungan.all');
