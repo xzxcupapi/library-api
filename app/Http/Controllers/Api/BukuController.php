@@ -153,4 +153,10 @@ class BukuController extends Controller
 
         return response()->json(['message' => 'Buku berhasil dihapus'], 200);
     }
+
+    public function getBukuTersedia()
+    {
+        $buku = Buku::where('status', 'tersedia')->orderBy('judul', 'asc')->get();
+        return response()->json(['data' => $buku], 200);
+    }
 }

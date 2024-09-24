@@ -13,7 +13,7 @@
                     <a class="nav-link" href="/buku">Buku</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Peminjaman</a>
+                    <a class="nav-link" href="/peminjaman">Peminjaman</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/kunjungan">Kunjungan</a>
