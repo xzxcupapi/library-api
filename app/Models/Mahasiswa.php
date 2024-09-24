@@ -22,4 +22,9 @@ class Mahasiswa extends Model
     {
         return $this->hasMany(Kunjungan::class, 'id_mahasiswa', 'id');
     }
+
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class, 'id_mahasiswa', 'id');
+    }
 }

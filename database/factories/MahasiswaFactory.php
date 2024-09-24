@@ -20,7 +20,7 @@ class MahasiswaFactory extends Factory
             'npm' => $this->faker->unique()->numerify('##########'),
             'nama_lengkap' => fake('id_ID')->name(),
             'fakultas' => $this->faker->randomElement(['Fakultas Teknik', 'Fakultas Ekonomi', 'Fakultas Ilmu Sosial', 'Fakultas Hukum']),
-            'sidik_jari' => $this->faker->uuid,
+            'sidik_jari' => substr($this->faker->uuid, 0, 5)
         ];
     }
 }

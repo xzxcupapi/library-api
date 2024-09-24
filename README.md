@@ -101,12 +101,53 @@
     -   **Example:** `http://127.0.0.1:8000/api/buku/search?judul=nis`
     -   **Example:** `Hanya menggunakan prefix 3 huruf saja`
 
+-   **Update Buku**
+
+    -   **Endpoint:** `POST /api/buku`
+    -   **Controller:** `BukuController::class`
+    -   **Method:** `put`
+    -   **Middleware:** `auth:sanctum`
+    -   **Description:** Edit buku record.
+
 -   **Delete Buku**
     -   **Endpoint:** `DELETE /api/buku/{id}`
     -   **Controller:** `BukuController::class`
     -   **Method:** `destroy`
     -   **Middleware:** `auth:sanctum`
     -   **Description:** Deletes a buku record by ID.
+
+### Peminjaman Management
+
+-   **Store Buku**
+
+    -   **Endpoint:** `POST /api/peminjaman`
+    -   **Controller:** `PeminjamanController::class`
+    -   **Method:** `store`
+    -   **Middleware:** `auth:sanctum`
+    -   **Description:** Stores a new peminjaman record.
+
+-   **Get All Peminjaman Data**
+
+    -   **Endpoint:** `GET /api/peminjaman`
+    -   **Controller:** `PeminjamanController::class`
+    -   **Method:** `getAll`
+    -   **Middleware:** `auth:sanctum`
+    -   **Description:** Retrieves all peminjaman records.
+
+-   **Update Status Peminjaman**
+
+    -   **Endpoint:** `POST /api/peminjaman`
+    -   **Controller:** `PeminjamanController::class`
+    -   **Method:** `put`
+    -   **Middleware:** `auth:sanctum`
+    -   **Description:** Edit status peminjaman record.
+
+-   **Delete Peminjaman**
+    -   **Endpoint:** `DELETE /api/peminjaman/{id}`
+    -   **Controller:** `PeminjamanController::class`
+    -   **Method:** `destroy`
+    -   **Middleware:** `auth:sanctum`
+    -   **Description:** Deletes a peminjaman record by ID.
 
 ## Routes
 
@@ -158,7 +199,21 @@ Route::prefix('api')->middleware('auth:sanctum')->group(function () {
         Route::post('/', [BukuController::class, 'store'])->name('buku.store');
         Route::get('/', [BukuController::class, 'getAllData'])->name('buku.index');
         Route::get('/search', [BukuController::class, 'searchByJudul'])->name('buku.search');
+        Route::put('/{id}', [BukuController::class, 'update'])->name('buku.update');
         Route::delete('/{id}', [BukuController::class, 'destroy'])->name('buku.destroy');
+    });
+});
+```
+
+### Buku Routes
+
+```php
+Route::prefix('api')->middleware('auth:sanctum')->group(function () {
+    Route::prefix('peminjaman')->group(function () {
+        Route::post('/', [PeminjamanController::class, 'store'])->name('peminjaman.store');
+        Route::get('/', [PeminjamanController::class, 'getAll'])->name('peminjaman.index');
+        Route::put('/{id}', [PeminjamanController::class, 'update'])->name('peminjaman.update');
+        Route::delete('/{id}', [PeminjamanController::class, 'destroy'])->name('peminjaman.destroy');
     });
 });
 ```
