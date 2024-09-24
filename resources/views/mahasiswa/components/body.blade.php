@@ -24,7 +24,7 @@
         const itemsPerPage = 9;
         let bukuList = [];
 
-        axios.get('http://127.0.0.1:8000/api/buku')
+        axios.get('http://127.0.0.1:8000/api/buku/dashboard/all')
             .then(function(response) {
                 bukuList = response.data.data;
 

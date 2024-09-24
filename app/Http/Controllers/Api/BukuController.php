@@ -37,6 +37,16 @@ class BukuController extends Controller
         ], 201);
     }
 
+    public function getBuku(Request $request)
+    {
+        $buku = Buku::all();
+        return response()->json([
+            'message' => 'Data Buku',
+            'data' => $buku,
+        ], 200);
+    }
+
+
     public function getAll(Request $request)
     {
         $searchValue = $request->input('search.value');
@@ -65,6 +75,8 @@ class BukuController extends Controller
             'data' => $buku,
         ], 200);
     }
+
+
 
     public function show($id)
     {
