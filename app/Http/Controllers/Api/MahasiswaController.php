@@ -170,4 +170,10 @@ class MahasiswaController extends Controller
             'data' => $mahasiswa
         ], 200);
     }
+
+    public function getMahasiswa()
+    {
+        $mahasiswa = Mahasiswa::orderBy('nama_lengkap', 'asc')->get();
+        return response()->json(['data' => $mahasiswa], 200);
+    }
 }

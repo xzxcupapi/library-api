@@ -51,11 +51,37 @@ class KunjunganController extends Controller
             return response()->json(['message' => 'Login terlebih dahulu'], 401);
         }
 
-        $kunjungan = Kunjungan::with('mahasiswa')->get();
+        $searchValue = $request->input('search.value');
+        $draw = $request->input('draw');
+        $limit = $request->input('length');
+        $offset = $request->input('start');
+        $month = $request->input('month');
+
+        $query = Kunjungan::with('mahasiswa');
+
+        if ($searchValue) {
+            $query->whereHas('mahasiswa', function ($q) use ($searchValue) {
+                $q->where('nama_lengkap', 'LIKE', "%{$searchValue}%");
+            });
+        }
+
+        if ($month) {
+            $query->whereMonth('tanggal_kunjungan', $month);
+        }
+
+        $query->orderBy('tanggal_kunjungan', 'desc');
+
+        $totalFiltered = $query->count();
+
+        $kunjungan = $query->offset($offset)->limit($limit)->get();
+
+        $total = Kunjungan::count();
 
         return response()->json([
-            'message' => 'Data Kunjungan',
-            'kunjungan' => $kunjungan,
+            'draw' => intval($draw),
+            'recordsTotal' => $total,
+            'recordsFiltered' => $totalFiltered,
+            'data' => $kunjungan,
         ], 200);
     }
 }

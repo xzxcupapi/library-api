@@ -99,7 +99,7 @@ class BukuController extends Controller
 
         $judul = $request->input('judul');
 
-        $prefix = substr($judul, 0, 2);
+        $prefix = substr($judul, 0, 4);
 
         $buku = Buku::where('judul', 'like', $prefix . '%')->get(['id', 'judul', 'pengarang', 'penerbit', 'tahun_terbit', 'status']);
 
@@ -152,5 +152,11 @@ class BukuController extends Controller
         $buku->delete();
 
         return response()->json(['message' => 'Buku berhasil dihapus'], 200);
+    }
+
+    public function getBukuTersedia()
+    {
+        $buku = Buku::where('status', 'tersedia')->orderBy('judul', 'asc')->get();
+        return response()->json(['data' => $buku], 200);
     }
 }
