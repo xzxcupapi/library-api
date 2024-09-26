@@ -51,20 +51,22 @@ class KunjunganController extends Controller
             return response()->json(['message' => 'Login terlebih dahulu'], 401);
         }
 
-        $kunjungan = Kunjungan::with('mahasiswa')->get();
+        $kunjungan = Kunjungan::with('mahasiswa')
+            ->orderBy('tanggal_kunjungan', 'desc')
+            ->get();
 
-        // Transformasi data untuk menyertakan nama mahasiswa
         $dataKunjungan = $kunjungan->map(function ($item) {
             return [
                 'id' => $item->id,
                 'nama_mahasiswa' => $item->mahasiswa ? $item->mahasiswa->nama_lengkap : null,
-                'tanggal_kunjungan' => $item->tanggal_kunjungan,
+                'tanggal_kunjungan' => Carbon::parse($item->tanggal_kunjungan)->format('d-m-Y'),
             ];
         });
 
         // Kembalikan data kunjungan dalam format JSON
         return response()->json($dataKunjungan, 200);
     }
+
 
     public function getAll(Request $request)
     {
