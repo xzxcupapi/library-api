@@ -48,6 +48,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('kunjungan')->group(function () {
         Route::get('/', [KunjunganController::class, 'getAll'])->name('kunjungan.index');
+        Route::get('/dashboard/all', [KunjunganController::class, 'getKunjungan'])->name('kunjungan.getKunjungan');
     });
 });
 Route::prefix('kunjungan')->group(function () {

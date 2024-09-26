@@ -45,6 +45,27 @@ class KunjunganController extends Controller
         ], 201);
     }
 
+    public function getKunjungan(Request $request)
+    {
+        if (!$request->user()) {
+            return response()->json(['message' => 'Login terlebih dahulu'], 401);
+        }
+
+        $kunjungan = Kunjungan::with('mahasiswa')->get();
+
+        // Transformasi data untuk menyertakan nama mahasiswa
+        $dataKunjungan = $kunjungan->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'nama_mahasiswa' => $item->mahasiswa ? $item->mahasiswa->nama_lengkap : null,
+                'tanggal_kunjungan' => $item->tanggal_kunjungan,
+            ];
+        });
+
+        // Kembalikan data kunjungan dalam format JSON
+        return response()->json($dataKunjungan, 200);
+    }
+
     public function getAll(Request $request)
     {
         if (!$request->user()) {
