@@ -39,7 +39,10 @@ class BukuController extends Controller
 
     public function getBuku(Request $request)
     {
-        $buku = Buku::all();
+        $buku = Buku::orderByRaw("status = 'dipinjam' DESC")
+            ->orderBy('judul', 'asc')
+            ->get();
+
         return response()->json([
             'message' => 'Data Buku',
             'data' => $buku,

@@ -28,7 +28,6 @@
             .then(function(response) {
                 bukuList = response.data.data;
 
-                // Sort books to show 'tersedia' first
                 bukuList.sort((a, b) => {
                     if (a.status === 'tersedia' && b.status !== 'tersedia') {
                         return -1;
