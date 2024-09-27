@@ -6,6 +6,8 @@ use App\Models\Buku;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+
 
 class BukuController extends Controller
 {
@@ -94,17 +96,34 @@ class BukuController extends Controller
         return response()->json($buku, 200);
     }
 
+
     public function searchByJudul(Request $request)
     {
+        Log::info('Request received for book search', [
+            'judul' => $request->input('judul')
+        ]);
+
         $request->validate([
             'judul' => 'required|string|min:2|max:100',
         ]);
 
         $judul = $request->input('judul');
 
-        $prefix = substr($judul, 0, 4);
+        $keywords = preg_split('/\s+|[\r\n]+/', $judul);
 
-        $buku = Buku::where('judul', 'like', $prefix . '%')->get(['id', 'judul', 'pengarang', 'penerbit', 'tahun_terbit', 'status']);
+        $query = Buku::query();
+        foreach ($keywords as $keyword) {
+            if (!empty($keyword)) {
+                $query->orWhere('judul', 'like', '%' . $keyword . '%');
+            }
+        }
+
+        $buku = $query->limit(5)->get(['id', 'judul', 'pengarang', 'penerbit', 'tahun_terbit', 'status']);
+
+        Log::info('Book search results', [
+            'judul' => $judul,
+            'results' => $buku
+        ]);
 
         if ($buku->isEmpty()) {
             return response()->json(['message' => 'Buku tidak ada'], 404);
@@ -115,6 +134,8 @@ class BukuController extends Controller
             'data' => $buku,
         ], 200);
     }
+
+
 
     public function update(Request $request, $id)
     {
