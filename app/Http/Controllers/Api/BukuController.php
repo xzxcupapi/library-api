@@ -11,7 +11,6 @@ class BukuController extends Controller
 {
     public function store(Request $request)
     {
-        // Validasi input, status tidak lagi divalidasi dari frontend
         $validator = Validator::make($request->all(), [
             'judul' => 'required|string|max:255',
             'pengarang' => 'required|string|max:255',
@@ -47,34 +46,42 @@ class BukuController extends Controller
     }
 
 
-    public function getAll(Request $request)
-    {
-        $searchValue = $request->input('search.value');
-        $draw = $request->input('draw');
-        $limit = $request->input('length');
-        $offset = $request->input('start');
+public function getAll(Request $request)
+{
+    $searchValue = $request->input('search.value');
+    $draw = $request->input('draw');
+    $limit = $request->input('length');
+    $offset = $request->input('start');
 
-        $query = Buku::query();
-        if ($searchValue) {
-            $query->where(function ($q) use ($searchValue) {
-                $q->where('judul', 'LIKE', "%{$searchValue}%")
-                    ->orWhere('pengarang', 'LIKE', "%{$searchValue}%")
-                    ->orWhere('status', 'LIKE', "%{$searchValue}%");
-            });
-        }
+    $query = Buku::query();
 
-        $totalFiltered = $query->count();
-        $buku = $query->offset($offset)->limit($limit)->get();
-
-        $total = Buku::count();
-
-        return response()->json([
-            'draw' => intval($draw),
-            'recordsTotal' => $total,
-            'recordsFiltered' => $totalFiltered,
-            'data' => $buku,
-        ], 200);
+    if ($searchValue) {
+        $query->where(function ($q) use ($searchValue) {
+            $q->where('judul', 'LIKE', "%{$searchValue}%")
+                ->orWhere('pengarang', 'LIKE', "%{$searchValue}%")
+                ->orWhere('status', 'LIKE', "%{$searchValue}%");
+        });
     }
+
+    $query->orderByRaw("CASE 
+        WHEN status = 'dipinjam' THEN 1 
+        WHEN status = 'tersedia' THEN 2 
+        ELSE 3 
+    END");
+
+    $totalFiltered = $query->count();
+
+    $buku = $query->offset($offset)->limit($limit)->get();
+
+    $total = Buku::count();
+
+    return response()->json([
+        'draw' => intval($draw),
+        'recordsTotal' => $total,
+        'recordsFiltered' => $totalFiltered,
+        'data' => $buku,
+    ], 200);
+}
 
 
 
