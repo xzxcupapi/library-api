@@ -28,7 +28,7 @@ class MahasiswaController extends Controller
         }
 
         $mahasiswa = Mahasiswa::create([
-            'npm' => $request->npm ?? '-',
+            'npm' => $request->npm,
             'nama_lengkap' => $request->nama_lengkap ?? '-',
             'fakultas' => $request->fakultas ?? '-',
             'sidik_jari' => $request->sidik_jari,
