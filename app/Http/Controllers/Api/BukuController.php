@@ -60,6 +60,7 @@ class BukuController extends Controller
         $offset = $request->input('start');
 
         $query = Buku::query();
+
         if ($searchValue) {
             $query->where(function ($q) use ($searchValue) {
                 $q->where('judul', 'LIKE', "%{$searchValue}%")
@@ -67,6 +68,14 @@ class BukuController extends Controller
                     ->orWhere('status', 'LIKE', "%{$searchValue}%");
             });
         }
+
+        // Logika pengurutan berdasarkan status
+        $query->orderByRaw("CASE 
+            WHEN status = 'dipinjam' THEN 1 
+            WHEN status = 'tersedia' THEN 2 
+            WHEN status = 'hilang' THEN 3 
+            ELSE 4 
+        END");
 
         $totalFiltered = $query->count();
         $buku = $query->offset($offset)->limit($limit)->get();
@@ -103,37 +112,54 @@ class BukuController extends Controller
             'judul' => $request->input('judul')
         ]);
 
+        // Validasi input
         $request->validate([
             'judul' => 'required|string|min:2|max:100',
         ]);
 
-        $judul = $request->input('judul');
+        try {
+            $judul = $request->input('judul');
+            $keywords = preg_split('/\s+|[\r\n]+/', $judul);
 
-        $keywords = preg_split('/\s+|[\r\n]+/', $judul);
-
-        $query = Buku::query();
-        foreach ($keywords as $keyword) {
-            if (!empty($keyword)) {
-                $query->orWhere('judul', 'like', '%' . $keyword . '%');
+            $query = Buku::query();
+            foreach ($keywords as $keyword) {
+                if (!empty($keyword)) {
+                    $query->orWhere('judul', 'like', '%' . $keyword . '%');
+                }
             }
+
+            // Ambil hasil pencarian
+            $buku = $query->get(['id', 'judul', 'pengarang', 'penerbit', 'tahun_terbit', 'status']);
+
+            // Periksa jika tidak ada buku yang ditemukan
+            if ($buku->isEmpty()) {
+                Log::info('No matching books found', ['judul' => $judul]);
+                return response()->json(['message' => 'Buku tidak ada'], 404);
+            }
+
+            // Jika ada buku ditemukan, batasi hingga 5 buku
+            $bukuLimited = $buku->take(3);
+
+            Log::info('Book search results', [
+                'judul' => $judul,
+                'results' => $bukuLimited
+            ]);
+
+            return response()->json([
+                'message' => 'Data Buku',
+                'data' => $bukuLimited,
+            ], 200);
+        } catch (\Exception $e) {
+            // Mencatat error ke log
+            Log::error('Error occurred during book search', [
+                'error' => $e->getMessage(),
+                'judul' => $request->input('judul'),
+            ]);
+            return response()->json(['message' => 'Tidak dapat mencari buku'], 500);
         }
-
-        $buku = $query->limit(5)->get(['id', 'judul', 'pengarang', 'penerbit', 'tahun_terbit', 'status']);
-
-        Log::info('Book search results', [
-            'judul' => $judul,
-            'results' => $buku
-        ]);
-
-        if ($buku->isEmpty()) {
-            return response()->json(['message' => 'Buku tidak ada'], 404);
-        }
-
-        return response()->json([
-            'message' => 'Data Buku',
-            'data' => $buku,
-        ], 200);
     }
+
+
 
 
 
