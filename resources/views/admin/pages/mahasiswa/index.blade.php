@@ -19,9 +19,9 @@
         <div class="container">
             <div class="d-flex justify-content-between align-items-center my-4">
                 <h1 class="text-left">Daftar Mahasiswa</h1>
-                <button class="btn btn-dark fw-bold fs-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;" onclick="daftarkanMahasiswa()">
+                <!-- <button class="btn btn-dark fw-bold fs-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;" onclick="daftarkanMahasiswa()">
                     <i class="bi bi-plus-square"></i>
-                </button>
+                </button> -->
             </div>
             <div class="table-responsive">
                 <table id="mahasiswaTable" class="table table-striped table-bordered table-hover">
@@ -84,6 +84,13 @@
                         },
                         {
                             data: "sidik_jari",
+                            render: function(data) {
+                                if (data) {
+                                    return `<i class="bi bi-check-circle-fill text-success"></i>`;
+                                } else {
+                                    return `<i class="bi bi-x-circle-fill text-danger"></i>`;
+                                }
+                            }
                         },
                         {
                             data: null,

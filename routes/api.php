@@ -34,7 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
 // MAHASISWA
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('mahasiswa')->group(function () {
-        Route::post('/', [MahasiswaController::class, 'store'])->name('mahasiswa.store');
         Route::get('/', [MahasiswaController::class, 'getAllData'])->name('mahasiswa.index');
         Route::get('/search', [MahasiswaController::class, 'searchByNpm'])->name('mahasiswa.search');
         Route::get('/{id}', [MahasiswaController::class, 'show'])->name('mahasiswa.id');
@@ -42,6 +41,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
         Route::get('/dashboard/all', [MahasiswaController::class, 'getMahasiswa'])->name('mahasiswa.dashboard');
     });
+});
+Route::prefix('mahasiswa')->group(function () {
+    Route::post('/', [MahasiswaController::class, 'store'])->name('mahasiswa.store');
 });
 
 // KUNJUNGAN

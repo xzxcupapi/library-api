@@ -14,10 +14,12 @@ class MahasiswaController extends Controller
     // create
     public function store(Request $request)
     {
+        Log::info('Data yang diterima:', $request->all());
+
         $validator = Validator::make($request->all(), [
-            'npm' => 'required|string|unique:table_mahasiswa,npm|max:10',
-            'nama_lengkap' => 'required|string|max:255',
-            'fakultas' => 'required|string|max:255',
+            'npm' => 'nullable|string|unique:table_mahasiswa,npm|max:10',
+            'nama_lengkap' => 'nullable|string|max:255',
+            'fakultas' => 'nullable|string|max:255',
             'sidik_jari' => 'required|string|unique:table_mahasiswa,sidik_jari',
         ]);
 
@@ -26,11 +28,13 @@ class MahasiswaController extends Controller
         }
 
         $mahasiswa = Mahasiswa::create([
-            'npm' => $request->npm,
-            'nama_lengkap' => $request->nama_lengkap,
-            'fakultas' => $request->fakultas,
+            'npm' => $request->npm ?? '-',
+            'nama_lengkap' => $request->nama_lengkap ?? '-',
+            'fakultas' => $request->fakultas ?? '-',
             'sidik_jari' => $request->sidik_jari,
         ]);
+
+        Log::info('Data yang disimpan ke database:', $mahasiswa->toArray());
 
         return response()->json([
             'message' => 'Mahasiswa berhasil ditambahkan',
