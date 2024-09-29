@@ -20,10 +20,10 @@
                         <label for="edit_fakultas" class="form-label">Fakultas</label>
                         <input type="text" class="form-control" id="edit_fakultas" required>
                     </div>
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <label for="edit_sidik_jari" class="form-label">Sidik Jari</label>
                         <input type="text" class="form-control" id="edit_sidik_jari" readonly>
-                    </div>
+                    </div> -->
                 </form>
             </div>
             <div class="modal-footer">
@@ -40,7 +40,7 @@
         const npm = $("#edit_npm").val();
         const nama_lengkap = $("#edit_nama_lengkap").val();
         const fakultas = $("#edit_fakultas").val();
-        const sidik_jari = $("#edit_sidik_jari").val();
+        // const sidik_jari = $("#edit_sidik_jari").val();
 
         $.ajax({
             url: `/api/mahasiswa/${id}`,
@@ -52,7 +52,7 @@
                 npm: npm,
                 nama_lengkap: nama_lengkap,
                 fakultas: fakultas,
-                sidik_jari: sidik_jari,
+                // sidik_jari: sidik_jari,
             },
             success: function(response) {
                 Swal.fire({
