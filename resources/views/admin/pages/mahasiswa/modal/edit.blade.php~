@@ -55,6 +55,7 @@
                 fakultas: fakultas,
                 nomor_hp: nomor_hp,
             },
+            console.log(data),
             success: function (response) {
                 Swal.fire({
                     icon: "success",

@@ -138,7 +138,7 @@
                 $("#edit_npm").val(data.npm);
                 $("#edit_nama_lengkap").val(data.nama_lengkap);
                 $("#edit_fakultas").val(data.fakultas);
-                $("#edit_nomor_hp").val(data.nomor_hp);
+                $("#edit_sidik_jari").val(data.sidik_jari);
 
                 const modal = new bootstrap.Modal(document.getElementById("editMahasiswaModal"));
                 modal.show();

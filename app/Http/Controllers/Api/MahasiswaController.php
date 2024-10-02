@@ -20,6 +20,7 @@ class MahasiswaController extends Controller
             'npm' => 'nullable|string|unique:table_mahasiswa,npm|max:10',
             'nama_lengkap' => 'nullable|string|max:255',
             'fakultas' => 'nullable|string|max:255',
+            'nomor_hp' => 'nullable|string|max:255',
             'sidik_jari' => 'required|string|unique:table_mahasiswa,sidik_jari',
         ]);
 
@@ -31,6 +32,7 @@ class MahasiswaController extends Controller
             'npm' => $request->npm,
             'nama_lengkap' => $request->nama_lengkap ?? '-',
             'fakultas' => $request->fakultas ?? '-',
+            'nomor_hp' => $request->nomor_hp ?? '-',
             'sidik_jari' => $request->sidik_jari,
         ]);
 
@@ -88,6 +90,7 @@ class MahasiswaController extends Controller
             'npm',
             'nama_lengkap' => 'string|max:255',
             'fakultas' => 'string|max:255',
+            'nomor_hp' => 'string|max:255',
             'sidik_jari',
         ]);
 
@@ -110,6 +113,9 @@ class MahasiswaController extends Controller
         }
         if ($request->has('fakultas')) {
             $mahasiswa->fakultas = $request->fakultas;
+        }
+        if ($request->has('nomor_hp')) {
+            $mahasiswa->nomor_hp = $request->nomor_hp;
         }
         if ($request->has('sidik_jari')) {
             $mahasiswa->sidik_jari = $request->sidik_jari;
